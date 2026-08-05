@@ -202,8 +202,10 @@ def causal_attention(q, k, v, is_causal=True):
 # Step 16 - model_decode_step (not yet solved)
 # TODO: implement
 
-# Step 17 - blocks_needed (not yet solved)
-# TODO: implement
+# Step 17 - blocks_needed
+def blocks_needed(num_tokens, block_size):
+    # TODO: return the number of fixed-size blocks needed to store num_tokens tokens.
+    return -(-num_tokens // block_size)
 
 # Step 18 - init_block_allocator (not yet solved)
 # TODO: implement

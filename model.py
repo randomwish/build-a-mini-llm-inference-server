@@ -135,8 +135,15 @@ def decode_tokens(token_ids, vocab, skip_special=True):
             list_string.append(vocab["id_to_token"][token_id])
     return "".join(list_string)
 
-# Step 10 - embed_tokens (not yet solved)
-# TODO: implement
+# Step 10 - embed_tokens
+import numpy as np
+
+def embed_tokens(token_ids, embedding_matrix):
+    # TODO: return the (T, D) embedding rows for each token id in token_ids
+    list_of_embeddings = np.empty((len(token_ids),len(embedding_matrix[0])))
+    for idx, token in enumerate(token_ids):
+        list_of_embeddings[idx] = embedding_matrix[token,:]
+    return list_of_embeddings
 
 # Step 11 - linear_projection (not yet solved)
 # TODO: implement

@@ -215,8 +215,25 @@ def model_prefill(token_ids, params):
     last_position = linear_projection(projected_attn[-1], params['W_out'])
     return (last_position, updated_cache)
 
-# Step 16 - model_decode_step (not yet solved)
-# TODO: implement
+# Step 16 - model_decode_step
+def model_decode_step(token_id, cache, params):
+    """Advance generation by one token using the existing KV cache."""
+    # TODO: advance generation by one token using the existing KV cache and return next-token logits
+    embedded_token = embed_tokens([token_id], params['embedding'])
+
+    projected_q = linear_projection(embedded_token, params['Wq'])
+    projected_k = linear_projection(embedded_token, params['Wk'])
+    projected_v = linear_projection(embedded_token, params['Wv'])
+
+    new_cache = append_kv(cache, projected_k, projected_v)
+    sliced_K = new_cache['K'][:new_cache['length']]
+    sliced_V = new_cache['V'][:new_cache['length']]
+
+    attn_score = causal_attention(projected_q, sliced_K, sliced_V, is_causal=False)
+    projected_attn = linear_projection(attn_score, params['Wo'])
+    last_position = linear_projection(projected_attn[-1], params['W_out'])
+
+    return (last_position, new_cache)
 
 # Step 17 - blocks_needed
 def blocks_needed(num_tokens, block_size):

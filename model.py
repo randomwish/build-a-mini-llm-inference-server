@@ -145,8 +145,13 @@ def embed_tokens(token_ids, embedding_matrix):
         list_of_embeddings[idx] = embedding_matrix[token,:]
     return list_of_embeddings
 
-# Step 11 - linear_projection (not yet solved)
-# TODO: implement
+# Step 11 - linear_projection
+def linear_projection(x, weight, bias=None):
+    # TODO: Apply y = x @ weight + bias, with bias optional and broadcasting over leading axes.
+    out = x @ weight
+    if bias is not None:
+        out = out + bias          # (..., D_out) + (D_out,) -> (..., D_out)
+    return out
 
 # Step 12 - init_kv_cache (not yet solved)
 # TODO: implement

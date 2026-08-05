@@ -50,8 +50,26 @@ def top_k_filter(logits, k):
                     row[idx] = -math.inf
         return logits
 
-# Step 4 - top_p_filter (not yet solved)
-# TODO: implement
+# Step 4 - top_p_filter
+import math
+def top_p_filter(logits, p):
+    # TODO: keep smallest set of tokens whose cumulative prob >= p, mask the rest to -inf.
+    shifted = logits - np.max(logits, axis=-1, keepdims=True)
+    probs = np.exp(shifted)
+    probs /= np.sum(probs, axis=-1, keepdims=True)
+
+    order = np.argsort(-probs, axis=-1, kind="stable")
+    sorted_probs = np.take_along_axis(probs, order, axis=-1)
+    cumulative = np.cumsum(sorted_probs, axis=-1)
+
+                        
+    remove_sorted = (cumulative - sorted_probs) >= p
+    remove = np.empty_like(remove_sorted)
+    np.put_along_axis(remove, order, remove_sorted, axis=-1)
+
+    out = logits.copy()
+    out[remove] = -np.inf
+    return out
 
 # Step 5 - sample_from_probs (not yet solved)
 # TODO: implement

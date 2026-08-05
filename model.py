@@ -229,7 +229,7 @@ def model_decode_step(token_id, cache, params):
     sliced_K = new_cache['K'][:new_cache['length']]
     sliced_V = new_cache['V'][:new_cache['length']]
 
-    attn_score = causal_attention(projected_q, sliced_K, sliced_V, is_causal=False)
+    attn_score = causal_attention(projected_q, sliced_K, sliced_V, is_causal=True)
     projected_attn = linear_projection(attn_score, params['Wo'])
     last_position = linear_projection(projected_attn[-1], params['W_out'])
 
